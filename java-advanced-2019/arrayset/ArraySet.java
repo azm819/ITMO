@@ -43,15 +43,11 @@ public class ArraySet<E> extends AbstractSet<E> implements SortedSet<E> {
         return index;
     }
 
-    private SortedSet<E> subTailSet(E fromElement, E toElement) {
+    private SortedSet<E> subSet(E fromElement, E toElement, boolean checker) {
         int fromIndex = findIndex(fromElement);
         int toIndex = findIndex(toElement);
-        toIndex++;
-        if (fromIndex > toIndex) {
-            throw new IllegalArgumentException();
-        } else {
-            return new ArraySet<>(array.subList(fromIndex, toIndex), comparator);
-        }
+        if(checker)toIndex++;
+        return new ArraySet<>(array.subList(fromIndex, toIndex), comparator);
     }
 
     @Override
@@ -71,13 +67,10 @@ public class ArraySet<E> extends AbstractSet<E> implements SortedSet<E> {
 
     @Override
     public SortedSet<E> subSet(E fromElement, E toElement) {
-        var fromIndex = findIndex(fromElement);
-        var toIndex = findIndex(toElement);
-        if (comparator.compare(fromElement, toElement) > 0 && fromIndex > toIndex) {
+        if(comparator.compare(fromElement, toElement) > 0){
             throw new IllegalArgumentException();
-        } else {
-            return new ArraySet<>(array.subList(fromIndex, toIndex), comparator);
         }
+        return subSet(fromElement, toElement, false);
     }
 
     @Override
@@ -87,7 +80,7 @@ public class ArraySet<E> extends AbstractSet<E> implements SortedSet<E> {
 
     @Override
     public SortedSet<E> tailSet(E from) {
-        return isEmpty() ? new ArraySet<>(Collections.emptyList(), comparator) : subTailSet(from, last());
+        return isEmpty() ? new ArraySet<>(Collections.emptyList(), comparator) : subSet(from, last(), true);
     }
 
     @Override
