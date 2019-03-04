@@ -118,11 +118,11 @@ public class Implementor implements Impler {
             Class[] parameterTypes = method.getParameterTypes();
             int length = parameterTypes.length;
             for (int i = 0; i < length - 1; ++i) {
-                result.append(parameterTypes[i].getSimpleName())
+                result.append(parameterTypes[i].getCanonicalName())
                         .append(ARGUMENT).append(i).append(COMMA);
             }
             if(length != 0){
-                result.append(parameterTypes[length - 1].getSimpleName()).append(ARGUMENT).append(length - 1);
+                result.append(parameterTypes[length - 1].getCanonicalName()).append(ARGUMENT).append(length - 1);
             }
             result.append(CLOSING_ROUND_BRACKET);
             Class[] exceptions = method.getExceptionTypes();
