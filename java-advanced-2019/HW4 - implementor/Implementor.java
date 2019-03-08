@@ -32,6 +32,7 @@ public class Implementor implements Impler {
     private static final String OPENING_ROUND_BRACKET = "(";
     private static final String CLOSING_ROUND_BRACKET = ")";
     private static final String PUBLIC = "public ";
+    private static final String PROTECTED = "protected ";
     private static final String CLASS = "class ";
     private static final String IMPLEMENTS = " implements ";
     private static final String ARGUMENT = " argument";
@@ -41,6 +42,7 @@ public class Implementor implements Impler {
     private static final String FALSE = "false";
     private static final String NULL = "null";
     private static final String ZERO = "0";
+
 
     public static void main(String[] args) {
         if (args.length < NUMBER_OF_ARGUMENTS) {
@@ -70,47 +72,44 @@ public class Implementor implements Impler {
         }
     }
 
-    @Override
-    public void implement(Class<?> token, Path root) throws ImplerException {
-        if (token.isPrimitive() || token.isArray() || token.isEnum() || Modifier.isFinal(token.getModifiers()) || token == Enum.class) {
-            throw new ImplerException("Invalid class");
-        }
-
-        root = root.resolve(token.getPackageName().replace(DOT, SEPARATOR));
-        try {
-            Files.createDirectories(root);
-        } catch (IOException e) {
-            System.out.println("Can't create directories");
-        }
-
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(root + SEPARATOR + token.getSimpleName() + IMPL + DOT + JAVA), StandardCharsets.UTF_8)) {
-            writer.write(Implementor.generateImplementation(token));
-        } catch (SecurityException e) {
-            System.err.println("Haven't access to output file");
-        } catch (InvalidPathException e) {
-            System.err.println("Wrong name of output Path");
-        } catch (IOException e) {
-            System.err.println("Cannot create writer");
-        }
+    private static StringBuilder generateImplementation(Class<?> token) {
+        return new StringBuilder(generatePackage(token))
+                .append(generateDeclaration(token))
+                .append(OPENING_FIGURED_BRACKET)
+                .append(generateMethods(token))
+                .append(CLOSING_FIGURED_BRACKET)
+                .append(NEXT_LINE);
     }
 
-    private static String generateImplementation(Class<?> token) {
-        return generatePackage(token) + generateDeclaration(token) + OPENING_FIGURED_BRACKET + generateMethods(token) + CLOSING_FIGURED_BRACKET + NEXT_LINE;
+    private static StringBuilder generatePackage(Class<?> token) {
+        var result = new StringBuilder(EMPTY_STRING);
+        if (!token.getPackageName().isEmpty()) {
+            result.append(PACKAGE)
+                    .append(token.getPackageName())
+                    .append(SEMICOLON)
+                    .append(NEXT_LINE);
+        }
+        return result;
     }
 
-    private static String generatePackage(Class<?> token) {
-        return PACKAGE + token.getPackageName() + SEMICOLON + NEXT_LINE;
-    }
-
-    private static String generateDeclaration(Class<?> token) {
+    private static StringBuilder generateDeclaration(Class<?> token) {
         String simpleName = token.getSimpleName();
-        return PUBLIC + CLASS + simpleName + IMPL + IMPLEMENTS + simpleName + SPACE + NEXT_LINE;
+        return new StringBuilder(PUBLIC)
+                .append(CLASS)
+                .append(simpleName)
+                .append(IMPL)
+                .append(IMPLEMENTS)
+                .append(simpleName)
+                .append(SPACE)
+                .append(NEXT_LINE);
     }
 
-    private static String generateMethods(Class<?> token) {
+    private static StringBuilder generateMethods(Class<?> token) {
         StringBuilder result = new StringBuilder(EMPTY_STRING);
         for (Method method : token.getMethods()) {
-            result.append(PUBLIC)
+            var accessModifiers = method.getModifiers();
+            String accessModifier = Modifier.isPublic(accessModifiers) ? PUBLIC : PROTECTED;
+            result.append(accessModifier)
                     .append(method.getReturnType().getCanonicalName())
                     .append(SPACE)
                     .append(method.getName())
@@ -121,7 +120,7 @@ public class Implementor implements Impler {
                 result.append(parameterTypes[i].getCanonicalName())
                         .append(ARGUMENT).append(i).append(COMMA);
             }
-            if(length != 0){
+            if (length != 0) {
                 result.append(parameterTypes[length - 1].getCanonicalName()).append(ARGUMENT).append(length - 1);
             }
             result.append(CLOSING_ROUND_BRACKET);
@@ -144,7 +143,7 @@ public class Implementor implements Impler {
                     .append(CLOSING_FIGURED_BRACKET)
                     .append(NEXT_LINE);
         }
-        return result.toString();
+        return result;
     }
 
     private static String getDefaultType(Class type) {
@@ -157,5 +156,29 @@ public class Implementor implements Impler {
                 return ZERO;
         } else
             return NULL;
+    }
+
+    @Override
+    public void implement(Class<?> token, Path root) throws ImplerException {
+        if (token.isPrimitive() || token.isArray() || token.isEnum() || Modifier.isFinal(token.getModifiers()) || token == Enum.class) {
+            throw new ImplerException("Invalid class");
+        }
+
+        root = root.resolve(token.getPackageName().replace(DOT, SEPARATOR));
+        try {
+            Files.createDirectories(root);
+        } catch (IOException e) {
+            System.out.println("Can't create directories");
+        }
+
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(root + SEPARATOR + token.getSimpleName() + IMPL + DOT + JAVA), StandardCharsets.UTF_8)) {
+            writer.write(Implementor.generateImplementation(token).toString());
+        } catch (SecurityException e) {
+            System.err.println("Haven't access to output file");
+        } catch (InvalidPathException e) {
+            System.err.println("Wrong name of output Path");
+        } catch (IOException e) {
+            System.err.println("Cannot create writer");
+        }
     }
 }
