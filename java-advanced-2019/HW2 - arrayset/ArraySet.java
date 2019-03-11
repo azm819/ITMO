@@ -75,7 +75,7 @@ public class ArraySet<E> extends AbstractSet<E> implements SortedSet<E> {
 
     @Override
     public SortedSet<E> headSet(E to) {
-        return isEmpty() ? new ArraySet<>(Collections.emptyList(), comparator) : subSet(first(), to);
+        return isEmpty() ? new ArraySet<>(Collections.emptyList(), comparator) : subSet(first(), to, false);
     }
 
     @Override
