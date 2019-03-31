@@ -46,7 +46,7 @@ public class ArraySet<E> extends AbstractSet<E> implements SortedSet<E> {
     private SortedSet<E> subSet(E fromElement, E toElement, boolean checker) {
         int fromIndex = findIndex(fromElement);
         int toIndex = findIndex(toElement);
-        if(checker)toIndex++;
+        if (checker) toIndex++;
         return new ArraySet<>(array.subList(fromIndex, toIndex), comparator);
     }
 
@@ -67,7 +67,11 @@ public class ArraySet<E> extends AbstractSet<E> implements SortedSet<E> {
 
     @Override
     public SortedSet<E> subSet(E fromElement, E toElement) {
-        if(comparator.compare(fromElement, toElement) > 0){
+        if (comparator == null) {
+            if ((Integer) fromElement > (Integer) toElement) {
+                throw new IllegalArgumentException();
+            }
+        } else if (comparator.compare(fromElement, toElement) > 0) {
             throw new IllegalArgumentException();
         }
         return subSet(fromElement, toElement, false);
