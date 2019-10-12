@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/util.dir/main.cpp.o  -o util 

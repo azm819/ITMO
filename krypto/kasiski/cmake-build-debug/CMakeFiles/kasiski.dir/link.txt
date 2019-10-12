@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/kasiski.dir/kasiski.cpp.o  -o kasiski 

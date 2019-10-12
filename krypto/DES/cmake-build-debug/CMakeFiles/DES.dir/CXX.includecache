@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/azamat/CLionProjects/krypto/DES/decryptor.hpp
+iostream
+-
+utils.hpp
+/home/azamat/CLionProjects/krypto/DES/utils.hpp
+
+/home/azamat/CLionProjects/krypto/DES/encryptor.hpp
+iostream
+-
+utils.hpp
+/home/azamat/CLionProjects/krypto/DES/utils.hpp
+
+/home/azamat/CLionProjects/krypto/DES/main.cpp
+stdint-gcc.h
+-
+encryptor.hpp
+/home/azamat/CLionProjects/krypto/DES/encryptor.hpp
+decryptor.hpp
+/home/azamat/CLionProjects/krypto/DES/decryptor.hpp
+
+/home/azamat/CLionProjects/krypto/DES/tables.h
+map
+-
+
+/home/azamat/CLionProjects/krypto/DES/utils.hpp
+stdint-gcc.h
+-
+tables.h
+/home/azamat/CLionProjects/krypto/DES/tables.h
+

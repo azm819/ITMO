@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/azamat/CLionProjects/krypto/kasiski/kasiski.cpp
+string
+-
+iostream
+-
+fstream
+-
+algorithm
+-
+cctype
+-
+cstddef
+-
+iterator
+-
+ctime
+-
+
