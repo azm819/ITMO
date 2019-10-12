@@ -1,3 +1,0 @@
-/home/azamat/CLionProjects/krypto/DES/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/azamat/CLionProjects/krypto/DES/cmake-build-debug/CMakeFiles/DES.dir
-/home/azamat/CLionProjects/krypto/DES/cmake-build-debug/CMakeFiles/edit_cache.dir

@@ -1,3 +1,0 @@
-/home/azamat/CLionProjects/krypto/HW1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/azamat/CLionProjects/krypto/HW1/cmake-build-debug/CMakeFiles/HW1.dir
-/home/azamat/CLionProjects/krypto/HW1/cmake-build-debug/CMakeFiles/edit_cache.dir
